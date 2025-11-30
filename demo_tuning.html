@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Compare Tunings — 230 / 440 / 404 Hz</title>
+<style>
+  :root{
+    --bg:#0f1113; --card:#131416; --muted:#b9bdc4; --accent:#3db6ff;
+    --btn:#22262a; --btn-hover:#2f3438;
+  }
+  body{background:var(--bg); color:white; font-family:Inter,Segoe UI,Arial; margin:0; padding:28px;}
+  h1{margin:0 0 6px; font-size:20px;}
+  p.lead{color:var(--muted); margin:0 0 18px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:18px;}
+  .card{background:var(--card); padding:14px; border-radius:10px; box-shadow:0 6px 18px rgba(0,0,0,0.6);}
+  .tuning-title{display:flex; align-items:center; gap:10px; margin-bottom:8px;}
+  .tag{background:rgba(255,255,255,0.04); padding:6px 10px; border-radius:8px; color:var(--muted); font-weight:600;}
+  .freq{font-size:12px; color:var(--muted);}
+  .controls{display:flex; gap:8px; align-items:center; margin:10px 0;}
+  select, label.switch{background:transparent; color:var(--muted);}
+  .notes, .chords {display:flex; flex-wrap:wrap; gap:6px; max-height:160px; overflow:auto; padding:6px; margin-bottom:8px;}
+  button.note, button.chord{
+    background:var(--btn); border:none; color:white; padding:6px 8px; border-radius:6px; cursor:pointer;
+    font-size:13px;
+  }
+  button.note:hover, button.chord:hover{background:var(--btn-hover);}
+  .chords {max-height:220px;}
+  .section-desc{font-size:13px; color:var(--muted); margin-bottom:8px;}
+  .small{font-size:12px; color:var(--muted);}
+  footer{margin-top:18px; color:var(--muted); font-size:13px;}
+  .wave-select{background:#0b0c0d; border:1px solid rgba(255,255,255,0.03); padding:6px 8px; color:var(--muted); border-radius:6px;}
+  .split{display:flex; gap:8px; flex-wrap:wrap;}
+  .muted-pill{font-size:12px; color:var(--muted); padding:6px 8px; background:rgba(255,255,255,0.02); border-radius:8px;}
+</style>
+</head>
+<body>
+
+<h1>Compare Tunings — 230 Hz (A♯3), 440 Hz, 404 Hz</h1>
+<p class="lead">Three side-by-side sections. Click a note or chord to hear it in that tuning. Waveforms: <strong>sine</strong> or <strong>square</strong>.</p>
+
+<div class="grid">
+
+  <!-- SECTION TEMPLATE (will be repeated for 3 tunings) -->
+  <div class="card" id="section-230">
+    <div class="tuning-title">
+      <div class="tag">230 Hz</div>
+      <div>
+        <div style="font-weight:700">230 Hz Root-Tuning</div>
+        <div class="freq">A♯3 = 230 Hz — Concert A4 ≈ 434.55 Hz</div>
+      </div>
+    </div>
+    <div class="section-desc">Root set to <strong>A♯3 = 230 Hz</strong>. Notes A3–A5 available below.</div>
+    <div class="controls">
+      <label class="small">Wave: </label>
+      <select class="wave-select" id="wave-230"><option value="sine">sine</option><option value="square">square</option></select>
+      <div style="flex:1"></div>
+      <div class="muted-pill small">Notes</div>
+    </div>
+    <div class="notes" id="notes-230"></div>
+
+    <div style="height:12px"></div>
+    <div class="small">Major Chords (24) — root pitch classes across two octaves</div>
+    <div class="chords" id="maj-230"></div>
+
+    <div style="height:8px"></div>
+    <div class="small">Minor Chords (24)</div>
+    <div class="chords" id="min-230"></div>
+  </div>
+
+  <div class="card" id="section-440">
+    <div class="tuning-title">
+      <div class="tag">440 Hz</div>
+      <div>
+        <div style="font-weight:700">Standard Tuning</div>
+        <div class="freq">A4 = 440 Hz</div>
+      </div>
+    </div>
+    <div class="section-desc">Standard concert pitch.</div>
+    <div class="controls">
+      <label class="small">Wave: </label>
+      <select class="wave-select" id="wave-440"><option value="sine">sine</option><option value="square">square</option></select>
+      <div style="flex:1"></div>
+      <div class="muted-pill small">Notes</div>
+    </div>
+    <div class="notes" id="notes-440"></div>
+
+    <div style="height:12px"></div>
+    <div class="small">Major Chords (24)</div>
+    <div class="chords" id="maj-440"></div>
+
+    <div style="height:8px"></div>
+    <div class="small">Minor Chords (24)</div>
+    <div class="chords" id="min-440"></div>
+  </div>
+
+  <div class="card" id="section-404">
+    <div class="tuning-title">
+      <div class="tag">404 Hz</div>
+      <div>
+        <div style="font-weight:700">404 Hz Tuning</div>
+        <div class="freq">A4 = 404 Hz</div>
+      </div>
+    </div>
+    <div class="section-desc">Alternative concert pitch A4 = 404 Hz.</div>
+    <div class="controls">
+      <label class="small">Wave: </label>
+      <select class="wave-select" id="wave-404"><option value="sine">sine</option><option value="square">square</option></select>
+      <div style="flex:1"></div>
+      <div class="muted-pill small">Notes</div>
+    </div>
+    <div class="notes" id="notes-404"></div>
+
+    <div style="height:12px"></div>
+    <div class="small">Major Chords (24)</div>
+    <div class="chords" id="maj-404"></div>
+
+    <div style="height:8px"></div>
+    <div class="small">Minor Chords (24)</div>
+    <div class="chords" id="min-404"></div>
+  </div>
+
+</div>
+
+<footer>
+  <div>How to publish: save this file as <code>index.html</code> and push to a GitHub repo; enable GitHub Pages (branch: main). I can give step-by-step if needed.</div>
+</footer>
+
+<script>
+/* ---------------------
+   Utilities: note -> semitone index
+   --------------------- */
+const NOTE_INDEX = {"C":0,"C#":1,"D":2,"D#":3,"E":4,"F":5,"F#":6,"G":7,"G#":8,"A":9,"A#":10,"B":11};
+
+function semitoneNumber(noteStr){
+  // noteStr like "A#3" or "C4"
+  const name = noteStr.slice(0, -1);
+  const octave = parseInt(noteStr.slice(-1));
+  return octave * 12 + NOTE_INDEX[name];
+}
+
+/* ---------------------
+   Build note list A3..A5
+   --------------------- */
+const pitchClasses = ["C","C#","D","D#","E","F","F#","G","G#","A","A#","B"];
+function buildNotes(rangeLowOct, rangeHighOct){
+  const arr=[];
+  for(let o=rangeLowOct;o<=rangeHighOct;o++){
+    for(const pc of pitchClasses) arr.push(pc+o);
+  }
+  // filter to A3..A5 inclusive
+  return arr.filter(n=>{
+    const s=semitoneNumber(n);
+    return s >= semitoneNumber("A3") && s <= semitoneNumber("A5");
+  });
+}
+const NOTES_A3_A5 = buildNotes(0,8); // will be filtered
+
+/* ---------------------
+   Tunings definitions
+   For 230: reference note A#3 = 230 Hz
+   For 440: A4 = 440 Hz
+   For 404: A4 = 404 Hz
+   --------------------- */
+const TUNINGS = {
+  "230": {refNote:"A#3", refFreq:230},
+  "440": {refNote:"A4", refFreq:440},
+  "404": {refNote:"A4", refFreq:404}
+};
+
+function freqForNote(noteStr, tuningKey){
+  const ref = TUNINGS[tuningKey];
+  const n = semitoneNumber(noteStr) - semitoneNumber(ref.refNote);
+  return ref.refFreq * Math.pow(2, n/12);
+}
+
+/* ---------------------
+   Audio: play single tone and chord
+   --------------------- */
+const AudioContext = window.AudioContext || window.webkitAudioContext;
+const audioCtx = new AudioContext();
+
+function playToneAtFreq(freq, duration=1.2, wave='sine', gainVal=0.18){
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = wave;
+  osc.frequency.value = freq;
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+  gain.gain.setValueAtTime(gainVal, audioCtx.currentTime+0.001);
+  // gentle release
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+  osc.start();
+  osc.stop(audioCtx.currentTime + duration + 0.02);
+}
+
+/* play chord: array of frequencies */
+function playChordFreqs(freqs, duration=2.0, wave='sine'){
+  const nodes = [];
+  const ctxTime = audioCtx.currentTime;
+  const masterGain = audioCtx.createGain();
+  masterGain.gain.value = 0.9; // overall, we set per-osc smaller
+  masterGain.connect(audioCtx.destination);
+
+  freqs.forEach((f, idx) => {
+    const osc = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    osc.type = wave;
+    // Slight voice spread to avoid phasing dead spots
+    osc.frequency.value = f * (1 + (idx - freqs.length/2) * 0.0012);
+    g.gain.setValueAtTime(0.22 / freqs.length, ctxTime + 0.001);
+    osc.connect(g);
+    g.connect(masterGain);
+    osc.start(ctxTime + 0.005);
+    osc.stop(ctxTime + duration + 0.05);
+    // release
+    g.gain.exponentialRampToValueAtTime(0.0001, ctxTime + duration + 0.02);
+    nodes.push({osc,g});
+  });
+}
+
+/* ---------------------
+   Chord generation: major/minor triad from root
+   root = semitone x
+   major = root, +4, +7
+   minor = root, +3, +7
+   We'll create 24 roots: all 12 pitch classes in octaves 3 and 4
+   --------------------- */
+const ROOTS_24 = [];
+for(const pc of pitchClasses){
+  ROOTS_24.push(pc + "3");
+}
+for(const pc of pitchClasses){
+  ROOTS_24.push(pc + "4");
+}
+// Now we will generate names like "C3:maj" etc for buttons
+
+/* ---------------------
+   UI: populate sections
+   --------------------- */
+function populateSection(tuningKey, prefix){
+  // notes
+  const notesDiv = document.getElementById("notes-" + prefix);
+  notesDiv.innerHTML = "";
+  NOTES_A3_A5.forEach(n => {
+    const b = document.createElement("button");
+    b.className = "note";
+    b.innerText = n;
+    b.title = n;
+    b.onclick = () => {
+      const wave = document.getElementById("wave-" + prefix).value;
+      const f = freqForNote(n, tuningKey);
+      // resume audio if suspended
+      if(audioCtx.state === 'suspended') audioCtx.resume();
+      playToneAtFreq(f, 1.2, wave);
+    };
+    notesDiv.appendChild(b);
+  });
+
+  // major chords
+  const majDiv = document.getElementById("maj-" + prefix);
+  majDiv.innerHTML = "";
+  ROOTS_24.forEach(root => {
+    const btn = document.createElement("button");
+    btn.className = "chord";
+    btn.innerText = root + " △";
+    btn.onclick = () => {
+      const wave = document.getElementById("wave-" + prefix).value;
+      if(audioCtx.state === 'suspended') audioCtx.resume();
+      const rootSem = semitoneNumber(root);
+      const notes = [rootSem, rootSem+4, rootSem+7].map(s => {
+        // convert semitone back to noteStr approx (we can compute freq directly)
+        // compute diff from ref note via semitone difference
+        const ref = TUNINGS[tuningKey];
+        const diff = s - semitoneNumber(ref.refNote);
+        return ref.refFreq * Math.pow(2, diff/12);
+      });
+      playChordFreqs(notes, 2.0, wave);
+    };
+    majDiv.appendChild(btn);
+  });
+
+  // minor chords
+  const minDiv = document.getElementById("min-" + prefix);
+  minDiv.innerHTML = "";
+  ROOTS_24.forEach(root => {
+    const btn = document.createElement("button");
+    btn.className = "chord";
+    btn.innerText = root + " ▽";
+    btn.onclick = () => {
+      const wave = document.getElementById("wave-" + prefix).value;
+      if(audioCtx.state === 'suspended') audioCtx.resume();
+      const rootSem = semitoneNumber(root);
+      const notes = [rootSem, rootSem+3, rootSem+7].map(s => {
+        const ref = TUNINGS[tuningKey];
+        const diff = s - semitoneNumber(ref.refNote);
+        return ref.refFreq * Math.pow(2, diff/12);
+      });
+      playChordFreqs(notes, 2.0, wave);
+    };
+    minDiv.appendChild(btn);
+  });
+}
+
+/* populate all three */
+populateSection("230", "230");
+populateSection("440", "440");
+populateSection("404", "404");
+
+/* Accessibility: allow space to stop all sounds by resuming & quick fade (simple approach) */
+document.addEventListener('keydown', e=>{
+  if(e.code === 'Space'){ // quick gentle suspend/resume toggle
+    if(audioCtx.state === 'running') audioCtx.suspend();
+    else audioCtx.resume();
+  }
+});
+</script>
+
+</body>
+</html>
